@@ -1,0 +1,60 @@
+﻿@page
+@model TutorialEU.Pages.PersonModel
+@{
+    <h1>Personas</h1>
+    <section class="row">
+        <h2>Comandos</h2>
+        <form method="get">
+            <button class="btn btn-primary">Añadir persona</button>
+            <a asp-route-MostrarInactivos="@(!Model.MostrarInactivos)" class="btn btn-secondary">
+                @(Model.MostrarInactivos ? "Ocultar" : "Mostrar")
+                Inactivos
+            </a>
+            <button class="btn btn-warning">Activar en grupo</button>
+            <button class="btn btn-warning">Desactivar en grupo</button>
+        </form>
+    </section>
+    <section>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Activo</th>
+                    <th scope="col">#</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Fecha Nacimiento</th>
+                    <th scope="col">Secreto</th>
+                    <th scope="col">Fecha de creacion</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var persona in Model.personas) {
+                    <tr>
+                        <td>
+                            <input asp-for="@persona.IsEnabled" class="form-check-input" type="checkbox">
+                        </td>
+                        <td>@persona.Id</td>
+                        <td>@persona.Name</td>
+                        <td>@persona.Birthday</td>
+                        <td>@persona.Secret</td>
+                        <td>@persona.CreatedAt</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <form method="get" class="row gy-2 gx-3 align-items-center">
+            <div class="col-auto">
+                <a asp-route-CurrentPage="@(Model.CurrentPage-1)" asp-route-SizePage="@Model.SizePage" asp-route-MostrarInactivos="@(Model.MostrarInactivos)" class="btn btn-primary @(Model.CurrentPage <= 0 ? "disabled":"")">Anterior</a>
+                <a asp-route-CurrentPage="@(Model.CurrentPage+1)" asp-route-SizePage="@Model.SizePage" asp-route-MostrarInactivos="@(Model.MostrarInactivos)" class="btn btn-primary @(Model.personas.Count == 0 ? "disabled": "")">Siguiente</a>
+                <label asp-for="@Model.SizePage">Mostrar:</label>
+            </div>
+            <div class="col-auto">
+                <select asp-for="@Model.SizePage" onchange="this.form.submit()" class="form-select">
+                    <option value="5" selected="@(Model.SizePage == 5)">5</option>
+                    <option value="10" selected="@(Model.SizePage == 10)">10</option>
+                    <option value="50" selected="@(Model.SizePage == 50)">50</option>
+                </select>
+            </div>
+            <input asp-for="@Model.MostrarInactivos" class="d-none">
+        </form>
+    </section>
+}
