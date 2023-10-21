@@ -9,8 +9,10 @@ namespace TutorialEU.Pages {
         public List<Person> personas { get; set; } = new List<Person>();
         // ! INYECCCION DE DEPENDENCIAS, no me gusta poner logica de DB en la pagina, cambiar
         private readonly TutorialUEContext _context;
-        public PersonModel(TutorialUEContext context) {
+        private readonly ILogger<PersonModel> _logger;
+        public PersonModel(TutorialUEContext context, ILogger<PersonModel> logger) {
             _context = context;
+            _logger = logger;
         }
         [BindProperty(SupportsGet = true)]
         public int CurrentPage { get; set; } = 0;
@@ -34,6 +36,29 @@ namespace TutorialEU.Pages {
             } else {
                 this.personas = await query.Where(p => p.IsEnabled == true).ToListAsync();
             }
+        }
+
+        public IActionResult OnPost(string? accion, List<int> idPersonas) {
+            this._logger.LogInformation("entre a post");
+            if (accion == null || idPersonas == null || idPersonas.Count == 0) {
+                this._logger.LogInformation("esta vacio");
+                return RedirectToPage("Person");
+            }
+            if (accion != "Activar" || accion != "Desactivar") {
+                return RedirectToPage("Person");
+            }
+
+            var personas = this._context.Person.Where(p => idPersonas.Contains(p.Id)).ToList();
+
+            if (accion == "Activar") {
+                personas.ForEach(p => p.IsEnabled = true);
+            } else {
+                personas.ForEach(p => p.IsEnabled = false);
+            }
+            this._context.UpdateRange(personas);
+            this._context.SaveChanges();
+
+            return RedirectToPage("Person");
         }
     }
 }
