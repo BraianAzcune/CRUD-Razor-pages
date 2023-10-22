@@ -61,7 +61,6 @@ public class ProductoServices {
                 this.logger.LogCritical($"Error no controlado SqlException ({ex.Number})", ex);
                 result.MensajeDesarrollador = $"Error no controlado SqlException ({ex.Number})";
             }
-
             return result;
         }
 

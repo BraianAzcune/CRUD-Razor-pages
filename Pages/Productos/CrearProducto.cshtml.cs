@@ -1,21 +1,21 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
-using System.Text.RegularExpressions;
 using TutorialEU.Data;
 using TutorialEU.Models;
+using TutorialEU.Services;
 
 namespace TutorialEU.Pages.Productos {
     public class CrearProductoModel : PageModel {
 
         private readonly TutorialUEContext _context;
         private readonly ILogger<CrearProductoModel> logger;
+        private readonly ProductoServices _services;
 
-        public CrearProductoModel(TutorialUEContext context, ILogger<CrearProductoModel> logger) {
+        public CrearProductoModel(TutorialUEContext context, ILogger<CrearProductoModel> logger, ProductoServices services) {
             _context = context;
             this.logger = logger;
+            this._services = services;
         }
 
         [BindProperty]
@@ -38,33 +38,12 @@ namespace TutorialEU.Pages.Productos {
                 )) {
 
                 this._context.Add(item);
-                try {
-
-                    await this._context.SaveChangesAsync();
-                } catch (DbUpdateException excepcion) {
-                    if (excepcion.InnerException is not SqlException) {
-                        this.logger.LogCritical("Error no controlado", excepcion);
-                        ViewData["mensajeError"] = "Error no controlado contacte con el administrador";
-                        return Page();
-                    }
-                    SqlException ex = (SqlException)excepcion.InnerException;
-
-                    // error index unico || error clave primaria existente
-                    if (ex.Number == 2601 || ex.Number == 2627) {
-                        this.logger.LogError("error clave primaria o clave indexada debe ser unica", ex.Message);
-                        string pattern = @"key value is \(([^)]+)\)";
-                        Match match = Regex.Match(ex.Message, pattern);
-                        if (match.Success) {
-                            ViewData["mensajeError"] = "Error un producto tiene un valor duplicado, que no puede usar, cambielo, el valor duplicado es: " + match.Groups[1].Value;
-                        } else {
-                            ViewData["mensajeError"] = "Error un producto tiene un valor duplicado, que no puede usar, el sistema no sabe cual es, contacte con el administrador";
-                        }
-                    } else {
-                        this.logger.LogCritical("Error no controlado", ex);
-                        ViewData["mensajeError"] = "Error de base de datos no controlada contacte con el administrador";
-                    }
+                var rta = await this._services.GuardarProductoAsync(item);
+                if (rta.Error) {
+                    ViewData["mensajeError"] = rta.MensajeUsuario;
                     return Page();
                 }
+
                 ViewData["mensajeSuccess"] = "producto creado con exito";
                 return Page();
             }
