@@ -29,6 +29,18 @@ namespace TutorialEU.Pages.Productos {
 
         }
 
+        public async Task<IActionResult> OnPostBorrarAsync(int id, string nombre) {
+            var prod = await this._context.Productos.FindAsync(id);
+            if (prod == null) {
+                ViewData["mensajeError"] = "Este producto no se puede borrar su id no fue encontrado, si considera que es un error contacte con el administrador";
+                return Page();
+            }
+            this._context.Productos.Remove(prod);
+            await this._context.SaveChangesAsync();
+            TempData["mensajeSuccess"] = $"producto {nombre} con id {id}, fue borrado exitosamente";
+            return RedirectToPage("./Index");
+        }
+
         public async Task<IActionResult> OnPostAsync() {
             if (!ModelState.IsValid) {
                 return Page();

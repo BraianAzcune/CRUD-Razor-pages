@@ -40,9 +40,38 @@
         <input asp-for="Producto.Activo" class="form-check-input" />
         <label asp-for="Producto.Activo">Activar producto?</label>
     </div>
-
-    <button type="submit" class="btn btn-primary">Submit</button>
-    <a asp-page="./Index" class="btn btn-success">Volver al listado</a>
+    <div class="d-flex justify-content-between">
+        <div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <a asp-page="./Index" class="btn btn-success">Volver al listado</a>
+        </div>
+        <!-- modal button show-->
+        <button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="btn btn-danger float-right">Eliminar Producto</button>
+    </div>
 
     <div asp-validation-summary="All" class="text-danger form-group"></div>
 </form>
+
+<!-- Modal -->
+<div class="modal modal-dialog modal-dialog-centered fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Confirmar Eliminacion de producto</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="No borrar"></button>
+            </div>
+            <div class="modal-body">
+                <p>Esta a punto de borrar el producto <span class="text-danger">@Model.Producto.Nombre</span> esta accion es irreversible</p>
+                @if (Model.Producto.Activo) {
+                    <span class="text-danger">recuerde que puede inactivarlo</span>
+                }
+            </div>
+            <div class="modal-footer d-flex justify-content-between">
+                <form method="post" >
+                    <button asp-page-handler="borrar" asp-route-nombre="@Model.Producto.Nombre" asp-route-id="@Model.Producto.Id" type="submit" class="btn btn-danger">Borrar</button>
+                </form>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">No borrar</button>
+            </div>
+        </div>
+    </div>
+</div>

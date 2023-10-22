@@ -5,7 +5,10 @@
 }
 
 <h1 class="text-center">Lista de productos</h1>
-
+<div class="text-success">@TempData["mensajeSuccess"]</div>
+<div class="text-danger">@TempData["mensajeError"]</div>
+<div class="text-success">@ViewData["mensajeSuccess"]</div>
+<div class="text-danger">@ViewData["mensajeError"]</div>
 <section>
     <h3>Comandos</h3>
     <div>
@@ -54,12 +57,11 @@
 
                         <td>@Html.DisplayFor(m=>item.Id)</td>
                         <!--<td>@Html.DisplayFor(m=>item.Activo)</td> -->
-                        <td>
-                            @{
-                                string estado = item.Activo ? "Activo" : "Inactivo";
-                            }
-                            @estado
-                        </td>
+                        @if (item.Activo) {
+                            <td class="text-success">Activo</td>
+                        } else {
+                            <td class="text-danger">Inactivo</td>
+                        }
                         <td>@Html.DisplayFor(m=>item.Nombre)</td>
                         <td>@Html.DisplayFor(m=>item.Precio)</td>
                         <td>@Html.DisplayFor(m=>item.Stock)</td>
