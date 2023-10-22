@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using TutorialEU.Data;
+using TutorialEU.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -9,6 +10,10 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<TutorialUEContext>(options => {
     options.UseSqlServer(builder.Configuration.GetConnectionString("TutorialUEDatabase"));
 });
+
+
+// añadir servicios disponibles para ser inyectados
+builder.Services.AddScoped<ProductoServices>();
 
 var app = builder.Build();
 

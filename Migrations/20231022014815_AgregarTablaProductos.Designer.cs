@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TutorialEU.Data;
 
@@ -11,9 +12,11 @@ using TutorialEU.Data;
 namespace TutorialEU.Migrations
 {
     [DbContext(typeof(TutorialUEContext))]
-    partial class TutorialUEContextModelSnapshot : ModelSnapshot
+    [Migration("20231022014815_AgregarTablaProductos")]
+    partial class AgregarTablaProductos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,9 +64,6 @@ namespace TutorialEU.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("Activo")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
@@ -75,7 +75,7 @@ namespace TutorialEU.Migrations
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Precio")
                         .HasColumnType("int");
@@ -84,9 +84,6 @@ namespace TutorialEU.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Nombre")
-                        .IsUnique();
 
                     b.ToTable("Productos");
                 });

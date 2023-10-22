@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TutorialEU.Data;
 
@@ -11,9 +12,11 @@ using TutorialEU.Data;
 namespace TutorialEU.Migrations
 {
     [DbContext(typeof(TutorialUEContext))]
-    partial class TutorialUEContextModelSnapshot : ModelSnapshot
+    [Migration("20231022032455_NOmbreProductoUnico")]
+    partial class NOmbreProductoUnico
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -1,0 +1,48 @@
+﻿@page
+@model TutorialEU.Pages.Productos.EditarProductoModel
+@{
+    ViewData["Title"] = "Editar producto";
+}
+
+<h1>Editar Producto </h1>
+<div class="text-success">@ViewData["mensajeSuccess"]</div>
+<div class="text-danger">@ViewData["mensajeError"]</div>
+@if (Model.Producto == null) {
+    return;
+}
+<form method="post">
+    <input type="hidden" asp-for="Producto.Id" />
+    <div class="form-group">
+        <label asp-for="Producto.Nombre"></label>
+        <input asp-for="Producto.Nombre" class="form-control" />
+        <span asp-validation-for="Producto.Nombre" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Producto.Descripcion"></label>
+        <input asp-for="Producto.Descripcion" class="form-control" />
+        <span asp-validation-for="Producto.Descripcion" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Producto.Stock"></label>
+        <input asp-for="Producto.Stock" class="form-control" />
+        <span asp-validation-for="Producto.Stock" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Producto.Precio"></label>
+        <input asp-for="Producto.Precio" class="form-control" />
+        <span asp-validation-for="Producto.Precio" class="text-danger"></span>
+    </div>
+
+    <div class="form-check">
+        <input asp-for="Producto.Activo" class="form-check-input" />
+        <label asp-for="Producto.Activo">Activar producto?</label>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <a asp-page="./Index" class="btn btn-success">Volver al listado</a>
+
+    <div asp-validation-summary="All" class="text-danger form-group"></div>
+</form>
