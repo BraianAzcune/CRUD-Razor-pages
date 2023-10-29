@@ -44,6 +44,9 @@
                         @Html.DisplayNameFor(m => m.Productos.First().CreatedAt)
                     </th>
                     <th scope="col">
+                        @Html.DisplayNameFor(m => m.Productos.First().ModifiedAt)
+                    </th>
+                    <th scope="col">
                         @Html.DisplayNameFor(m => m.Productos.First().Descripcion)
                     </th>
                     <th>
@@ -66,6 +69,7 @@
                         <td>@Html.DisplayFor(m=>item.Precio)</td>
                         <td>@Html.DisplayFor(m=>item.Stock)</td>
                         <td>@Html.DisplayFor(m=>item.CreatedAt)</td>
+                        <td>@Html.DisplayFor(m=>item.ModifiedAt)</td>
                         <td>
                             @{
                                 string descripcion = item.Descripcion.Length <= 5 ? item.Descripcion : item.Descripcion.Substring(0, 9);

@@ -20,6 +20,15 @@ public class TutorialUEContext : DbContext {
         modelBuilder.Entity<Producto>()
             .Property(p => p.CreatedAt)
             .HasDefaultValueSql("getutcdate()");
+
+        modelBuilder.Entity<Producto>()
+            .Property(p => p.ModifiedAt)
+            .HasDefaultValueSql("getutcdate()")
+            .ValueGeneratedOnAddOrUpdate();
+
+        modelBuilder.Entity<Producto>().ToTable(tb => tb.HasTrigger("Productos_UPDATE"));
+
+
     }
 }
 

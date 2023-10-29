@@ -19,4 +19,6 @@ public class Producto {
     public DateTime CreatedAt { get; set; }
     [Display(Name = "Estado")]
     public bool Activo { get; set; } = false;
+    [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+    public DateTime ModifiedAt { get; set; }
 }
